@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: hoursfrontend
+  name: hoursfrontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hoursfrontend
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: hoursfrontend
+    spec:
+      containers:
+      - image: mausv/hours_frontend
+        name: hoursfrontend
+        ports:
+        - containerPort: 80
+        resources: {}
+status: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: hoursbackend
+  name: hoursbackend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hoursbackend
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: hoursbackend
+    spec:
+      containers:
+      - image: mausv/hours_backend
+        name: hoursbackend
+        ports:
+        - containerPort: 5000
+        resources: {}
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: hoursfrontend
+  name: hoursfrontend
+spec:
+  ports:
+  - name: "80"
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: hoursfrontend
+  type: LoadBalancer
+status:
+  loadBalancer: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: hoursbackend
+  name: hoursbackend
+spec:
+  ports:
+  - name: "5000"
+    port: 5000
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: hoursbackend
+  type: LoadBalancer
+status:
+  loadBalancer: {}

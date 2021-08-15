@@ -1,0 +1,11 @@
+version: '3.1'
+
+services:
+  hoursfrontend:
+    image: mausv/hours_frontend
+    ports:
+      - "80:80"
+  hoursbackend:
+    image: mausv/hours_backend
+    ports:
+      - "5000:5000"
