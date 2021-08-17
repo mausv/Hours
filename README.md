@@ -1,5 +1,7 @@
-# Hours
+# [Hours](http://hours.mausv.com/)
 Calculate billable and non-billable hours.
+
+![image](https://user-images.githubusercontent.com/10158269/129493612-b32b2a64-e93d-4397-b8f8-c0f39135ed09.png)
 
 # Backend
 Python 3.9.2 API with Flask to handle the conversions and summing of the hours.
