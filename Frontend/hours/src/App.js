@@ -134,7 +134,7 @@ function App() {
             >
               <input
                 style={{ fontStyle: hour[0] ? "normal" : "italic" }}
-                type="text"
+                type="time"
                 className="form-control"
                 placeholder="11:00"
                 aria-label="Starting Time"
@@ -144,7 +144,7 @@ function App() {
               <span className="input-group-text">–</span>
               <input
                 style={{ fontStyle: hour[1] ? "normal" : "italic" }}
-                type="text"
+                type="time"
                 className="form-control"
                 placeholder="14:35"
                 aria-label="Ending Time"
@@ -223,7 +223,7 @@ function App() {
             >
               <input
                 style={{ fontStyle: time[0] ? "normal" : "italic" }}
-                type="text"
+                type="time"
                 className="form-control"
                 placeholder="5:40"
                 aria-label="Starting Time"
