@@ -4,7 +4,7 @@ Calculate billable and non-billable hours.
 ![image](https://user-images.githubusercontent.com/10158269/130005875-d8257a61-1c6b-4cce-b213-9f8748ff4353.png)
 
 # Backend
-Python 3.9.2 API with Flask to handle the conversions and summing of the hours.
+Python 3.9.2 API with Flask to handle the conversions and addition of the hours.
 
 # Frontend
 React 17.0.2 to call the Backend interactively.
