@@ -19,7 +19,7 @@ function App() {
   });
 
   const addHour = () => {
-    setHours([...hours, ["", "", false]]);
+    setHours([...hours, ["", "", false, ""]]);
   };
 
   const removeHour = (idx) => {
@@ -77,13 +77,20 @@ function App() {
         console.log("Result", res.data.data);
         const results = res.data.data;
         setResBillable({
-          billableHours: results.billable.billable_hours,
-          billableMinutes: results.billable.billable_minutes,
+          billableHours: results.billable.hours,
+          billableMinutes: results.billable.minutes,
         });
         setResHours({
           hours: results.hours.hours,
           minutes: results.hours.minutes,
         });
+        var tempHours = hours.map((hour, idx) => {
+          var tempHour = [...hour];
+          var curRes = results.time_windows[idx];
+          tempHour[3] = `${curRes.hours}h ${curRes.minutes}m`;
+          return tempHour;
+        });
+        setHours(tempHours);
       });
   };
 
@@ -99,8 +106,8 @@ function App() {
         console.log("Result", res.data.data);
         const results = res.data.data;
         setResBillableTime({
-          billableHoursTime: results.billable.billable_hours,
-          billableMinutesTime: results.billable.billable_minutes,
+          billableHoursTime: results.billable.hours,
+          billableMinutesTime: results.billable.minutes,
         });
         setResHoursTime({
           hoursTime: results.hours.hours,
@@ -112,71 +119,87 @@ function App() {
   return (
     <div className="container">
       <h1>Time Windows</h1>
-      <div>
-        {hours.map((hour, idx) => (
-          <div
-            key={idx}
-            className="row"
-            style={{ marginTop: 10, marginBottom: 10 }}
-          >
-            <div className="col">
-              <button
-                type="button"
-                className="btn btn-danger"
-                onClick={() => removeHour(idx)}
-              >
-                -
-              </button>
-            </div>
-            <div
-              className="col-6"
-              style={{ display: "flex", flexDirection: "row", minWidth: 200 }}
-            >
-              <input
-                style={{ fontStyle: hour[0] ? "normal" : "italic" }}
-                type="time"
-                className="form-control"
-                placeholder="11:00"
-                aria-label="Starting Time"
-                onChange={(e) => setHour(idx, 0, e.target.value)}
-                value={hour[0]}
-              />
-              <span className="input-group-text">–</span>
-              <input
-                style={{ fontStyle: hour[1] ? "normal" : "italic" }}
-                type="time"
-                className="form-control"
-                placeholder="14:35"
-                aria-label="Ending Time"
-                onChange={(e) => setHour(idx, 1, e.target.value)}
-                value={hour[1]}
-              />
-            </div>
-            <div
-              className="col"
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                backgroundColor: hour[2] ? "#0d6efd" : "grey",
-                borderRadius: 5,
-                paddingRight: -10,
-                marginRight: 10,
-              }}
-            >
-              <input
-                style={{ marginRight: 10 }}
-                id={"billable-" + idx}
-                type="checkbox"
-                checked={hour[2]}
-                onChange={(e) => setBillable(idx, 2)}
-              />
-              <label style={{ color: "white" }} htmlFor={"billable-" + idx}>
-                Billable
-              </label>
-            </div>
-          </div>
-        ))}
+      <div className="table-responsive">
+        <table style={{ width: "100%" }}>
+          <thead>
+            <tr>
+              <th></th>
+              <th style={{ textAlign: "center" }}>Time</th>
+              <th></th>
+              <th style={{ textAlign: "center" }}>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {hours.map((hour, idx) => (
+              <tr key={idx} style={{ marginTop: 10, marginBottom: 10 }}>
+                <td>
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={() => removeHour(idx)}
+                  >
+                    -
+                  </button>
+                </td>
+                <td
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    minWidth: 200,
+                  }}
+                >
+                  <input
+                    style={{ fontStyle: hour[0] ? "normal" : "italic" }}
+                    type="time"
+                    className="form-control"
+                    placeholder="11:00"
+                    aria-label="Starting Time"
+                    onChange={(e) => setHour(idx, 0, e.target.value)}
+                    value={hour[0]}
+                  />
+                  <span className="input-group-text">–</span>
+                  <input
+                    style={{ fontStyle: hour[1] ? "normal" : "italic" }}
+                    type="time"
+                    className="form-control"
+                    placeholder="14:35"
+                    aria-label="Ending Time"
+                    onChange={(e) => setHour(idx, 1, e.target.value)}
+                    value={hour[1]}
+                  />
+                </td>
+                <td>
+                  <div
+                    style={{
+                      margin: 2,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: hour[2] ? "#0d6efd" : "grey",
+                      borderRadius: 5,
+                      padding: 4,
+                    }}
+                  >
+                    <input
+                      style={{ marginRight: 10 }}
+                      id={"billable-" + idx}
+                      type="checkbox"
+                      checked={hour[2]}
+                      onChange={(e) => setBillable(idx, 2)}
+                    />
+                    <label
+                      style={{ color: "white" }}
+                      htmlFor={"billable-" + idx}
+                    >
+                      Billable
+                    </label>
+                  </div>
+                </td>
+                <td style={{ textAlign: "center", minWidth: 70 }}>{hour[3]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       <div style={{ marginBottom: 10 }}>
         <button className="btn btn-success" onClick={addHour}>
