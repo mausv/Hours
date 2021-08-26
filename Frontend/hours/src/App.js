@@ -1,5 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
+const { REACT_APP_ENV } = process.env;
+const API_URL =
+  REACT_APP_ENV === "PRODUCTION"
+    ? "http://hoursapi.mausv.com/hours"
+    : "http://localhost:5000/hours";
 
 function App() {
   const [hours, setHours] = useState([]);
@@ -71,27 +76,25 @@ function App() {
       time: [hour[0], hour[1]],
       billable: hour[2],
     }));
-    axios
-      .post("http://hoursapi.mausv.com/hours", { hours: tempHours })
-      .then((res) => {
-        console.log("Result", res.data.data);
-        const results = res.data.data;
-        setResBillable({
-          billableHours: results.billable.hours,
-          billableMinutes: results.billable.minutes,
-        });
-        setResHours({
-          hours: results.hours.hours,
-          minutes: results.hours.minutes,
-        });
-        var tempHours = hours.map((hour, idx) => {
-          var tempHour = [...hour];
-          var curRes = results.time_windows[idx];
-          tempHour[3] = `${curRes.hours}h ${curRes.minutes}m`;
-          return tempHour;
-        });
-        setHours(tempHours);
+    axios.post(API_URL, { hours: tempHours }).then((res) => {
+      console.log("Result", res.data.data);
+      const results = res.data.data;
+      setResBillable({
+        billableHours: results.billable.hours,
+        billableMinutes: results.billable.minutes,
       });
+      setResHours({
+        hours: results.hours.hours,
+        minutes: results.hours.minutes,
+      });
+      var tempHours = hours.map((hour, idx) => {
+        var tempHour = [...hour];
+        var curRes = results.time_windows[idx];
+        tempHour[3] = `${curRes.hours}h ${curRes.minutes}m`;
+        return tempHour;
+      });
+      setHours(tempHours);
+    });
   };
 
   const calculateTime = () => {
@@ -100,20 +103,18 @@ function App() {
       billable: time[1],
     }));
     console.log("Temp Hours", tempHours);
-    axios
-      .post("http://hoursapi.mausv.com/hours", { hours: tempHours })
-      .then((res) => {
-        console.log("Result", res.data.data);
-        const results = res.data.data;
-        setResBillableTime({
-          billableHoursTime: results.billable.hours,
-          billableMinutesTime: results.billable.minutes,
-        });
-        setResHoursTime({
-          hoursTime: results.hours.hours,
-          minutesTime: results.hours.minutes,
-        });
+    axios.post(API_URL, { hours: tempHours }).then((res) => {
+      console.log("Result", res.data.data);
+      const results = res.data.data;
+      setResBillableTime({
+        billableHoursTime: results.billable.hours,
+        billableMinutesTime: results.billable.minutes,
       });
+      setResHoursTime({
+        hoursTime: results.hours.hours,
+        minutesTime: results.hours.minutes,
+      });
+    });
   };
 
   return (
