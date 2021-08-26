@@ -246,7 +246,7 @@ function App() {
             >
               <input
                 style={{ fontStyle: time[0] ? "normal" : "italic" }}
-                type="time"
+                maxLength={5}
                 className="form-control"
                 placeholder="5:40"
                 aria-label="Starting Time"
