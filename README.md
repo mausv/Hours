@@ -1,13 +1,17 @@
 # [Hours](http://hours.mausv.com/)
 Calculate billable and non-billable hours.
 
-![image](https://user-images.githubusercontent.com/10158269/130009470-77dab36a-4826-4ceb-bd4f-258f8a6937ee.png)
+![image](https://user-images.githubusercontent.com/10158269/130177795-9d962297-7d08-46df-9492-2ae2a6a28ac1.png)
 
 # Backend
 Python 3.9.2 API with Flask to handle the conversions and addition of the hours.
 
+Run `FLASK_APP=api.py FLASK_ENV=development python3 -m flask run --host=0.0.0.0`.
+
 # Frontend
 React 17.0.2 to call the Backend interactively.
+
+Run `yarn start`.
 
 # Deployment
 ## Build Docker images
